@@ -128,8 +128,14 @@ class BaseDecisionTree(six.with_metaclass(ABCMeta, BaseEstimator)):
 
         random_state = check_random_state(self.random_state)
         if check_input:
-            X = check_array(X, dtype=DTYPE, accept_sparse="csc")
-            y = check_array(y, ensure_2d=False, dtype=None)
+            
+            # X = check_array(X, dtype=DTYPE, accept_sparse="csc")
+            # Check array but also allow np.NaN representing missing values
+            X = check_array(X, dtype=DTYPE, accept_sparse="csc", force_all_finite='allow-nan')
+            # y = check_array(y, ensure_2d=False, dtype=None)
+            # Check array but also allow np.NaN representing missing values
+            y = check_array(y, ensure_2d=False, dtype=None, force_all_finite='allow-nan')
+
             if issparse(X):
                 X.sort_indices()
 
