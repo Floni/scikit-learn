@@ -169,7 +169,7 @@ class SimpleImputer(BaseEstimator, TransformerMixin):
         self.copy = copy
 
     def _validate_input(self, X):
-        allowed_strategies = ["mean", "median", "most_frequent", "constant", "discard"]
+        allowed_strategies = ["mean", "median", "most_frequent", "constant"]
         if self.strategy not in allowed_strategies:
             raise ValueError("Can only use these strategies: {0} "
                              " got strategy={1}".format(allowed_strategies,
@@ -272,9 +272,6 @@ class SimpleImputer(BaseEstimator, TransformerMixin):
             # fill_value in each column
             statistics.fill(fill_value)
 
-        elif strategy == "discard":
-            return X[~np.isnan(X).any(axis=1)]
-
         else:
             for i in range(X.shape[1]):
                 column = X.data[X.indptr[i]:X.indptr[i + 1]]
@@ -352,9 +349,6 @@ class SimpleImputer(BaseEstimator, TransformerMixin):
             # for constant strategy, self.statistcs_ is used to store
             # fill_value in each column
             return np.full(X.shape[1], fill_value, dtype=X.dtype)
-
-        elif strategy == "discard":
-            return X[~np.isnan(X).any(axis=1)]
 
     def transform(self, X):
         """Impute all missing values in X.
