@@ -288,7 +288,7 @@ class Imputer(BaseEstimator, TransformerMixin):
             most_frequent = np.empty(X.shape[0])
 
             for i, (row, row_mask) in enumerate(zip(X[:], mask[:])):
-                row_mask = np.logical_not(row_mask).astype(np.bool)
+                row_mask = np.logical_not(row_mask)
                 row = row[row_mask]
                 most_frequent[i] = _most_frequent(row, np.nan, 0)
 
@@ -370,3 +370,6 @@ class Imputer(BaseEstimator, TransformerMixin):
             X[coordinates] = values
 
         return X
+
+    def _more_tags(self):
+        return {'allow_nan': True}
